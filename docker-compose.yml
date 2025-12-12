@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # === 1. SERVIDOR DE LA API (AHORA CON gRPC) ===
+  app:
+    build: . 
+    container_name: minecraft-api
+    ports:
+      - "3000:3000"   # Puerto original (REST)
+      - "50051:50051" # ⬅️ NUEVO: Puerto para gRPC (Postman se conecta aquí)
+    environment:
+      - PORT=3000
+      - DB_URI=mongodb://mongo_db:27017/minecraft_server
+    depends_on:
+      - mongo_db
+    volumes:
+      - .:/usr/src/app # Monta tu carpeta actual para que vea los archivos nuevos (grpc_server.js y .proto)
+      - /usr/src/app/node_modules # Truco para evitar conflictos con node_modules del host
+    
+    # ⬇️ ESTA LÍNEA ES LA CLAVE: 
+    # 1. Instala las librerías de gRPC automáticamente al iniciar.
+    # 2. Ejecuta tu nuevo archivo 'src/grpc_server.js' en lugar del server normal.
+    command: sh -c "npm install @grpc/grpc-js @grpc/proto-loader && node src/grpc_server.js"
+
+  # === 2. SERVIDOR DE MONGODB (Se queda igual) ===
+  mongo_db:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

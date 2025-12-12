@@ -1,0 +1,24 @@
+{
+  "name": "minecraft-api",
+  "version": "1.0.0",
+  "description": "API REST para la gestión del servidor de Minecraft",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "mongodb",
+    "express",
+    "nodejs",
+    "minecraft"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.1"
+  }
+}

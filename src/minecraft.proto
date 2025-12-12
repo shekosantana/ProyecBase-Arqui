@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package minecraft;
+
+// Definición del servicio (los métodos que puedes llamar)
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (UserResponse);
+  rpc GetUser (UserRequestId) returns (UserResponse);
+  rpc DeleteUser (UserRequestId) returns (DeleteResponse);
+}
+
+// Mensaje para crear un usuario (lo que envías en el POST)
+message CreateUserRequest {
+  string username = 1;
+  string email = 2;
+  string passwordHash = 3;
+  string rol = 4;
+  string minecraftUUID = 5;
+}
+
+// Mensaje para identificar un usuario (para GET y DELETE)
+message UserRequestId {
+  string id = 1;
+}
+
+// Estructura anidada para estadísticas
+message ServerStats {
+  int32 horasJugadas = 1;
+  int32 kills = 2;
+  int32 deaths = 3;
+}
+
+// Mensaje de respuesta con los datos del usuario
+message UserResponse {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string rol = 4;
+  string minecraftUUID = 5;
+  ServerStats serverStats = 6;
+  string registroFecha = 7;
+}
+
+// Respuesta simple para borrar
+message DeleteResponse {
+  string message = 1;
+}
